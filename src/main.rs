@@ -8,7 +8,10 @@ mod utils;
 
 use std::{env, sync::Arc};
 
-use axum::{Router, routing::{get, post}};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 use reqwest::Client;
 use tracing::{info, warn};
 
@@ -22,8 +25,7 @@ use linear::LinearClient;
 async fn main() {
     tracing_subscriber::fmt()
         .with_env_filter(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "info".into()),
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()),
         )
         .init();
 
