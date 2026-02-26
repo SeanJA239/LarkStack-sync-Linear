@@ -25,11 +25,6 @@
 
 - 📢 **Group Notifications (Phase 1)**: Automatically pushes Interactive Cards to a designated Lark group when Linear Issues are created or updated. Cards are color-coded based on priority. Includes a **500ms DebounceMap** window to coalesce rapid-fire updates and prevent notification spam.
 
-<p align="center">
-  <img src="./docs/images/lark-update-card.png" width="600" alt="Lark Update Card Showcase">
-  <br>
-  <sup><i>Real-time Linear issue updates delivered to Lark via Interactive Cards.</i></sup>
-</p>
 
 - 👤 **Direct Message on Assign (Phase 2)**: Automatically sends a private DM to a team member when an issue is assigned to them. Matches the assignee's Linear email with their Lark account email natively—no manual ID mapping required!
 - 🔗 **Rich Link Previews (Phase 3)**: When a user pastes a `linear.app` link in Lark, the bridge handles Lark's `url_verification` challenge, fetches issue details via Linear's GraphQL API, and unfurls the link into a detailed summary card.

@@ -25,11 +25,6 @@
 
 - 📢 **群组动态广播 (Phase 1)**：实时监听 Linear Webhook，生成按优先级变色的飞书 Interactive Card（例如：Urgent = 红色，High = 橙色）。底层自带 **500ms 防抖 (DebounceMap)** 机制，完美合并高频更新，拒绝消息轰炸。
 
-<p align="center">
-  <img src="./docs/images/lark-update-card.png" width="600" alt="Lark Update Card Showcase">
-  <br>
-  <sup><i>Linear 动态实时推送至飞书群组的交互式卡片效果展示。</i></sup>
-</p>
 
 - 👤 **精准私聊提醒 (Phase 2)**：当 Issue 被分配时，自动提取邮箱并通过飞书 Bot API 发送私聊。直接进行底层邮箱映射，彻底免除手动维护用户 ID 表的烦恼！
 - 🔗 **富文本链接预览 (Phase 3)**：原生处理飞书 `url_verification` 握手挑战。在飞书中粘贴 `linear.app` 链接，系统会自动通过 Linear GraphQL API 抓取详情并展开为精美的预览卡片。
