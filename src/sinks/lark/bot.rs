@@ -119,4 +119,40 @@ impl LarkBotClient {
             Err(format!("DM request returned {status}: {body}"))
         }
     }
+
+    /// Sends an interactive card to a group chat identified by `chat_id`.
+    pub async fn send_to_chat(&self, chat_id: &str, card: &LarkCard) -> Result<(), String> {
+        let token = self.get_token().await?;
+
+        let payload = json!({
+            "receive_id": chat_id,
+            "msg_type": "interactive",
+            "content": serde_json::to_string(card).unwrap_or_default(),
+        });
+
+        let resp = self
+            .http
+            .post("https://open.larksuite.com/open-apis/im/v1/messages?receive_id_type=chat_id")
+            .header("Authorization", format!("Bearer {token}"))
+            .json(&payload)
+            .send()
+            .await
+            .map_err(|e| format!("chat message request failed: {e}"))?;
+
+        let status = resp.status();
+        let body = resp.text().await.unwrap_or_default();
+
+        if status.is_success() {
+            let parsed: serde_json::Value =
+                serde_json::from_str(&body).unwrap_or(serde_json::Value::Null);
+            let code = parsed.get("code").and_then(|v| v.as_i64()).unwrap_or(-1);
+            if code != 0 {
+                return Err(format!("chat API returned code {code}: {body}"));
+            }
+            info!("card sent to chat {chat_id}");
+            Ok(())
+        } else {
+            Err(format!("chat message request returned {status}: {body}"))
+        }
+    }
 }
