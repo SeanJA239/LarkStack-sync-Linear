@@ -114,6 +114,7 @@ pub struct GitHubConfig {
     pub user_map: HashMap<String, String>,
     pub alert_labels: Vec<String>,
     pub repo_whitelist: Vec<String>,
+    pub pat: Option<String>,
 }
 
 #[cfg(not(feature = "cf-worker"))]
@@ -141,11 +142,14 @@ impl GitHubConfig {
             })
             .unwrap_or_default();
 
+        let pat = std::env::var("GITHUB_PAT").ok();
+
         Some(Self {
             webhook_secret: secret,
             user_map,
             alert_labels,
             repo_whitelist,
+            pat,
         })
     }
 }
@@ -184,11 +188,14 @@ impl GitHubConfig {
             })
             .unwrap_or_default();
 
+        let pat = env.secret("GITHUB_PAT").ok().map(|s| s.to_string());
+
         Some(Self {
             webhook_secret: secret,
             user_map,
             alert_labels,
             repo_whitelist,
+            pat,
         })
     }
 }
@@ -284,6 +291,9 @@ impl AppState {
             info!("GITHUB_WEBHOOK_SECRET set – GitHub webhook source enabled");
             if !gh.repo_whitelist.is_empty() {
                 info!("GitHub repo whitelist: {:?}", gh.repo_whitelist);
+            }
+            if gh.pat.is_some() {
+                info!("GITHUB_PAT set – outbound GitHub API enabled");
             }
         }
         info!("debounce delay: {}ms", server.debounce_delay_ms);
