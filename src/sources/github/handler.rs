@@ -345,7 +345,7 @@ async fn handle_pull_request(
                 deletions: pr.deletions.unwrap_or(0),
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, None).await;
+            dispatch::dispatch_github(&event, state, None).await;
             StatusCode::OK
         }
         PullRequestWebhookEventAction::ReviewRequested => {
@@ -368,7 +368,7 @@ async fn handle_pull_request(
                 reviewer_lark_id,
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, dm_email.as_deref()).await;
+            dispatch::dispatch_github(&event, state, dm_email.as_deref()).await;
             StatusCode::OK
         }
         PullRequestWebhookEventAction::Closed if pr.merged_at.is_some() => {
@@ -386,7 +386,7 @@ async fn handle_pull_request(
                 merged_by,
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, None).await;
+            dispatch::dispatch_github(&event, state, None).await;
             StatusCode::OK
         }
         _ => {
@@ -429,7 +429,7 @@ async fn handle_issues(
         author,
         url: html_url,
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -465,7 +465,7 @@ async fn handle_push(
         commits,
         compare_url: payload.compare.to_string(),
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -631,7 +631,7 @@ async fn handle_pr_cf(
                 deletions: pr.deletions.unwrap_or(0),
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, None).await;
+            dispatch::dispatch_github(&event, state, None).await;
             StatusCode::OK
         }
         "review_requested" => {
@@ -654,7 +654,7 @@ async fn handle_pr_cf(
                 reviewer_lark_id,
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, dm_email.as_deref()).await;
+            dispatch::dispatch_github(&event, state, dm_email.as_deref()).await;
             StatusCode::OK
         }
         "closed" if pr.merged_at.is_some() => {
@@ -672,7 +672,7 @@ async fn handle_pr_cf(
                 merged_by,
                 url: html_url,
             };
-            dispatch::dispatch(&event, state, None).await;
+            dispatch::dispatch_github(&event, state, None).await;
             StatusCode::OK
         }
         _ => {
@@ -714,7 +714,7 @@ async fn handle_issues_cf(
         author: issue.user.login.clone(),
         url: issue.html_url.clone(),
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -750,7 +750,7 @@ async fn handle_push_cf(
         commits,
         compare_url: payload.compare.clone(),
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -789,7 +789,7 @@ async fn dispatch_workflow_run(
         conclusion,
         url: run.html_url,
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -815,7 +815,7 @@ async fn dispatch_secret_scanning(
         secret_type: secret_type.to_string(),
         url: alert.html_url,
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
@@ -855,7 +855,7 @@ async fn dispatch_dependabot(
         summary: summary.to_string(),
         url: alert.html_url,
     };
-    dispatch::dispatch(&event, state, None).await;
+    dispatch::dispatch_github(&event, state, None).await;
     StatusCode::OK
 }
 
