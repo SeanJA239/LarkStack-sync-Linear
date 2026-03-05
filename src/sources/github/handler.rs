@@ -526,7 +526,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse pull_request payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             handle_pr_cf(state, github, repo, payload).await
@@ -536,7 +536,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse issues payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             handle_issues_cf(state, github, repo, payload).await
@@ -546,7 +546,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse push payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             handle_push_cf(state, repo, payload).await
@@ -556,7 +556,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse workflow_run payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             if payload.action != "completed" {
@@ -570,7 +570,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse secret_scanning_alert payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             if payload.action != "created" {
@@ -584,7 +584,7 @@ async fn dispatch_cf(
                 Ok(p) => p,
                 Err(e) => {
                     warn!("failed to parse dependabot_alert payload: {e}");
-                    return StatusCode::BAD_REQUEST;
+                    return StatusCode::OK;
                 }
             };
             if payload.action != "created" {
@@ -769,7 +769,7 @@ async fn dispatch_workflow_run(
         Ok(r) => r,
         Err(e) => {
             warn!("failed to parse workflow_run data: {e}");
-            return StatusCode::BAD_REQUEST;
+            return StatusCode::OK;
         }
     };
     let conclusion = run.conclusion.unwrap_or_else(|| "unknown".to_string());
@@ -802,7 +802,7 @@ async fn dispatch_secret_scanning(
         Ok(a) => a,
         Err(e) => {
             warn!("failed to parse secret_scanning_alert data: {e}");
-            return StatusCode::BAD_REQUEST;
+            return StatusCode::OK;
         }
     };
     let secret_type = alert
@@ -828,7 +828,7 @@ async fn dispatch_dependabot(
         Ok(a) => a,
         Err(e) => {
             warn!("failed to parse dependabot_alert data: {e}");
-            return StatusCode::BAD_REQUEST;
+            return StatusCode::OK;
         }
     };
     let severity = alert.severity.to_lowercase();
